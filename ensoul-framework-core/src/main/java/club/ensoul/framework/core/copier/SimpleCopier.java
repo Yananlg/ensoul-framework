@@ -2,7 +2,7 @@ package club.ensoul.framework.core.copier;
 
 import club.ensoul.framework.core.copier.cache.CopierHelper;
 import club.ensoul.framework.core.copier.converter.DefaultConverter;
-import club.ensoul.framework.core.exception.CopierException;
+import club.ensoul.framework.core.copier.exception.CopierException;
 import org.springframework.cglib.beans.BeanCopier;
 import org.springframework.cglib.core.Converter;
 

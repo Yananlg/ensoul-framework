@@ -1,10 +1,8 @@
 package club.ensoul.framework.jpa.core;
 
 import club.ensoul.framework.core.copier.SimpleCopier;
-import club.ensoul.framework.helper.DateHelper;
 import club.ensoul.framework.jpa.copier.ResultCopier;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.WebDataBinder;
@@ -13,7 +11,6 @@ import org.springframework.web.bind.annotation.InitBinder;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -42,10 +39,6 @@ public abstract class BaseController<U, ID> extends ResultCopier implements Fetc
      */
     @InitBinder
     public void initBinder(WebDataBinder binder) {
-        SimpleDateFormat simpleDateFormat = DateHelper.typicalDateTimeFMT();
-        simpleDateFormat.setLenient(true);
-        // 格式话日期格式
-        binder.registerCustomEditor(Date.class, new CustomDateEditor(simpleDateFormat, true));
         // 去除String参数两边空字符
         binder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
     }

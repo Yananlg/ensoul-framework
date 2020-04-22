@@ -4,7 +4,11 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-public interface KVEnum extends IEnum<Integer, String> {
+public interface MappedEnum {
+    
+    Integer key();
+    
+    String value();
     
     @Data
     @NoArgsConstructor

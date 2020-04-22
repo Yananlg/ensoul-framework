@@ -4,8 +4,8 @@ import club.ensoul.framework.core.copier.annotation.EntityCopier;
 import club.ensoul.framework.core.copier.annotation.EntityCopiers;
 import club.ensoul.framework.core.copier.annotation.IgnoreCopier;
 import club.ensoul.framework.core.copier.cache.CopierHelper;
-import club.ensoul.framework.core.domain.KVEnum;
-import club.ensoul.framework.core.exception.CopierException;
+import club.ensoul.framework.core.domain.MappedEnum;
+import club.ensoul.framework.core.copier.exception.CopierException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cglib.beans.BeanCopier;
 import org.springframework.cglib.core.Converter;
@@ -54,23 +54,23 @@ public class SimpleConverter implements Converter, Serializable {
         } else if(String.class.isAssignableFrom(sourceClass)) {
             // string转数值
             targetValue = str2Number(sourceValue, targetClass, targetValue);
-        } else if(KVEnum.class.isAssignableFrom(sourceClass) && targetClass == String.class) {
+        } else if(MappedEnum.class.isAssignableFrom(sourceClass) && targetClass == String.class) {
             // StateEnum枚举转换
-            return ((KVEnum) sourceValue).value();
-        } else if(KVEnum.class.isAssignableFrom(sourceClass) && (targetClass == Long.class || targetClass == Integer.class)) {
-            return ((KVEnum) sourceValue).key();
-        } else if(KVEnum.class.isAssignableFrom(targetClass) && sourceClass == String.class) {
+            return ((MappedEnum) sourceValue).value();
+        } else if(MappedEnum.class.isAssignableFrom(sourceClass) && (targetClass == Long.class || targetClass == Integer.class)) {
+            return ((MappedEnum) sourceValue).key();
+        } else if(MappedEnum.class.isAssignableFrom(targetClass) && sourceClass == String.class) {
             Object[] enumConstants = targetClass.getEnumConstants();
             for(Object enumConstant : enumConstants) {
-                KVEnum anEnum = (KVEnum) enumConstant;
+                MappedEnum anEnum = (MappedEnum) enumConstant;
                 if(sourceValue.equals(anEnum.value())) {
                     targetValue = anEnum;
                 }
             }
-        } else if(KVEnum.class.isAssignableFrom(targetClass) && (sourceClass == Long.class || sourceClass == Integer.class)) {
+        } else if(MappedEnum.class.isAssignableFrom(targetClass) && (sourceClass == Long.class || sourceClass == Integer.class)) {
             Object[] enumConstants = targetClass.getEnumConstants();
             for(Object enumConstant : enumConstants) {
-                KVEnum anEnum = (KVEnum) enumConstant;
+                MappedEnum anEnum = (MappedEnum) enumConstant;
                 if(sourceValue.equals(anEnum.key())) {
                     targetValue = anEnum;
                 }

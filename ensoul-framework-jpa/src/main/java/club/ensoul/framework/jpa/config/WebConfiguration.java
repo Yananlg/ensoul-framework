@@ -1,8 +1,8 @@
 package club.ensoul.framework.jpa.config;
 
-import club.ensoul.framework.core.domain.KVEnum;
-import club.ensoul.framework.core.jackson.JacksonEnumDeserializer;
-import club.ensoul.framework.core.jackson.JacksonEnumSerialzer;
+import club.ensoul.framework.core.domain.MappedEnum;
+import club.ensoul.framework.core.jackson.EnumDeserializer;
+import club.ensoul.framework.core.jackson.DescribeEnumSerialzer;
 import club.ensoul.framework.helper.DateHelper;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -83,8 +83,8 @@ public class WebConfiguration implements WebMvcConfigurer {
         objectMapper.configure(SerializationFeature.WRITE_DURATIONS_AS_TIMESTAMPS, false);
         
         SimpleModule module = new SimpleModule();
-        module.addDeserializer(KVEnum.class, JacksonEnumDeserializer.instance());
-        module.addSerializer(KVEnum.class, JacksonEnumSerialzer.instance());
+        module.addDeserializer(MappedEnum.class, EnumDeserializer.instance());
+        module.addSerializer(MappedEnum.class, DescribeEnumSerialzer.instance());
         objectMapper.registerModule(module);
         
         return new MappingJackson2HttpMessageConverter(objectMapper);

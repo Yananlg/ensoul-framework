@@ -18,15 +18,15 @@ import java.util.Date;
 @ApiModel(description = "返回响应数据")
 public abstract class AbstractResult<T> implements Serializable {
     
-    @ApiModelProperty(value = "响应码 200:成功")
+    @ApiModelProperty(value = "响应码 1:成功 0:失败")
     protected int status;
     
-    @ApiModelProperty(value = "消息提示")
+    @ApiModelProperty(value = "错误信息")
     protected String message;
     
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    @ApiModelProperty(value = "错误信息，无信息时不返回该字段")
-    protected String error;
+    @ApiModelProperty(value = "错误码，无信息时不返回该字段")
+    protected Integer errorCode;
     
     @ApiModelProperty(value = "服务器时间")
     protected Date timestamp;
@@ -75,8 +75,8 @@ public abstract class AbstractResult<T> implements Serializable {
         return ResponseStatus.SUCCESS.status() == status;
     }
     
-    public AbstractResult<T> error(String error) {
-        this.setError(error);
+    public AbstractResult<T> errorCode(Integer errorCode) {
+        this.setErrorCode(errorCode);
         return this;
     }
     

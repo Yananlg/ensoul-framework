@@ -1,4 +1,4 @@
-package club.ensoul.framework.core.exception;
+package club.ensoul.framework.core.copier.exception;
 
 public class CopierException extends RuntimeException {
 
