@@ -2,8 +2,6 @@ package club.ensoul.framework.helper;
 
 import org.springframework.lang.NonNull;
 
-import java.sql.Time;
-import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -17,19 +15,25 @@ public class DateHelper {
     
     private static ConcurrentMap<Pattern, ThreadLocal<SimpleDateFormat>> patternFomtMap = new ConcurrentHashMap<>();
     private static ConcurrentMap<Regex, ThreadLocal<SimpleDateFormat>> regexFomtMap = new ConcurrentHashMap<>();
-    //
-    // public static final ThreadLocal<SimpleDateFormat> typicalTimestampFormat = ThreadLocal.withInitial(() -> new SimpleDateFormat(Pattern..pattern));
-    //
-    // public static final ThreadLocal<SimpleDateFormat> typicalDateFormat = ThreadLocal.withInitial(() -> new SimpleDateFormat(Pattern.TYPICAL_DATE.pattern));
-    // public static final ThreadLocal<SimpleDateFormat> typicalSortTimeFormat = ThreadLocal.withInitial(() -> new SimpleDateFormat(Pattern.TYPICAL_SORT_TIME.pattern));
-    // public static final ThreadLocal<SimpleDateFormat> typicalTimeFormat = ThreadLocal.withInitial(() -> new SimpleDateFormat(Pattern.TYPICAL_TIME.pattern));
-    // public static final ThreadLocal<SimpleDateFormat> typicalDateTimeFormat = ThreadLocal.withInitial(() -> new SimpleDateFormat(Pattern.TYPICAL_DATETIME.pattern));
-    // public static final ThreadLocal<SimpleDateFormat> typicalDateTimeMillisecondFormat = ThreadLocal.withInitial(() -> new SimpleDateFormat(Pattern.TYPICAL_DATETIME_MILLISECOND.pattern));
-    //
-    // public static final ThreadLocal<SimpleDateFormat> zhDateFormat = ThreadLocal.withInitial(() -> new SimpleDateFormat(Pattern.ZH_DATE.pattern));
-    // public static final ThreadLocal<SimpleDateFormat> zhSortTimeFormat = ThreadLocal.withInitial(() -> new SimpleDateFormat(Pattern.ZH_SORT_TIME.pattern));
-    // public static final ThreadLocal<SimpleDateFormat> zhTimeFormat = ThreadLocal.withInitial(() -> new SimpleDateFormat(Pattern.ZH_TIME.pattern));
-    // public static final ThreadLocal<SimpleDateFormat> zhDateTimeFormat = ThreadLocal.withInitial(() -> new SimpleDateFormat(Pattern.ZH_DATETIME.pattern));
+    
+    static {
+        
+        patternFomtMap.put(Pattern.TYPICAL_DATE, Format.TYPICAL_DATE.format);
+        patternFomtMap.put(Pattern.TYPICAL_SORT_TIME, Format.TYPICAL_SORT_TIME.format);
+        patternFomtMap.put(Pattern.TYPICAL_TIME, Format.TYPICAL_TIME.format);
+        patternFomtMap.put(Pattern.TYPICAL_DATETIME, Format.TYPICAL_DATETIME.format);
+        patternFomtMap.put(Pattern.ZH_DATE, Format.ZH_DATE.format);
+        patternFomtMap.put(Pattern.ZH_TIME, Format.ZH_TIME.format);
+        patternFomtMap.put(Pattern.ZH_SORT_TIME, Format.ZH_SORT_TIME.format);
+        patternFomtMap.put(Pattern.ZH_DATETIME, Format.ZH_DATETIME.format);
+        
+        regexFomtMap.put(Regex.TYPICAL_DATE, Format.TYPICAL_DATE.format);
+        regexFomtMap.put(Regex.TYPICAL_SORT_TIME, Format.TYPICAL_SORT_TIME.format);
+        regexFomtMap.put(Regex.TYPICAL_TIME, Format.TYPICAL_TIME.format);
+        regexFomtMap.put(Regex.TYPICAL_DATETIME, Format.TYPICAL_DATETIME.format);
+        regexFomtMap.put(Regex.TYPICAL_DATETIME_MILLISECOND, Format.TYPICAL_DATETIME_MILLISECOND.format);
+        
+    }
     
     public static Date getDate(@NonNull String dateStr) throws ParseException {
         for(Entry<Regex, ThreadLocal<SimpleDateFormat>> entry : regexFomtMap.entrySet()) {
@@ -53,35 +57,8 @@ public class DateHelper {
         return java.sql.Timestamp.valueOf(dateStr);
     }
     
-    public static void main(String[] args) {
-        String s = "2020-12-12 12:15:57";
-        // System.out.println(getSQLDate(s));
-        // System.out.println(getSQLTime(s));
-        System.out.println(getSQLTimestamp(s));
-    }
-    
-    public void init() {
-        
-        patternFomtMap.put(Pattern.TYPICAL_DATE, Format.TYPICAL_DATE.dateFormatThreadLocal);
-        patternFomtMap.put(Pattern.TYPICAL_SORT_TIME, Format.TYPICAL_SORT_TIME.dateFormatThreadLocal);
-        patternFomtMap.put(Pattern.TYPICAL_TIME, Format.TYPICAL_TIME.dateFormatThreadLocal);
-        patternFomtMap.put(Pattern.TYPICAL_DATETIME, Format.TYPICAL_DATETIME.dateFormatThreadLocal);
-        patternFomtMap.put(Pattern.ZH_DATE, Format.ZH_DATE.dateFormatThreadLocal);
-        patternFomtMap.put(Pattern.ZH_TIME, Format.ZH_TIME.dateFormatThreadLocal);
-        patternFomtMap.put(Pattern.ZH_SORT_TIME, Format.ZH_SORT_TIME.dateFormatThreadLocal);
-        patternFomtMap.put(Pattern.ZH_DATETIME, Format.ZH_DATETIME.dateFormatThreadLocal);
-        
-        // regexFomtMap.put(Regex.TIMESTAMP_REGX, Format.TIMESTAMP_REGX.dateFormatThreadLocal);
-        regexFomtMap.put(Regex.TYPICAL_DATE, Format.TYPICAL_DATE.dateFormatThreadLocal);
-        regexFomtMap.put(Regex.TYPICAL_SORT_TIME, Format.TYPICAL_SORT_TIME.dateFormatThreadLocal);
-        regexFomtMap.put(Regex.TYPICAL_TIME, Format.TYPICAL_TIME.dateFormatThreadLocal);
-        regexFomtMap.put(Regex.TYPICAL_DATETIME, Format.TYPICAL_DATETIME.dateFormatThreadLocal);
-        regexFomtMap.put(Regex.TYPICAL_DATETIME_MILLISECOND, Format.TYPICAL_DATETIME_MILLISECOND.dateFormatThreadLocal);
-        
-    }
-    
     public enum Format {
-    
+        
         TYPICAL_DATE(ThreadLocal.withInitial(() -> new SimpleDateFormat(Pattern.TYPICAL_DATE.pattern))),
         TYPICAL_SORT_TIME(ThreadLocal.withInitial(() -> new SimpleDateFormat(Pattern.TYPICAL_SORT_TIME.pattern))),
         TYPICAL_TIME(ThreadLocal.withInitial(() -> new SimpleDateFormat(Pattern.TYPICAL_TIME.pattern))),
@@ -95,10 +72,10 @@ public class DateHelper {
         
         ;
         
-        public ThreadLocal<SimpleDateFormat> dateFormatThreadLocal;
-    
-        Format(ThreadLocal<SimpleDateFormat> dateFormatThreadLocal) {
-            this.dateFormatThreadLocal = dateFormatThreadLocal;
+        public ThreadLocal<SimpleDateFormat> format;
+        
+        Format(ThreadLocal<SimpleDateFormat> format) {
+            this.format = format;
         }
         
     }
